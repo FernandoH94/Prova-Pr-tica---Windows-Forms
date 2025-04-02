@@ -19,7 +19,6 @@ namespace Prova_Prática___Windows_Forms
         private void btnSalvar_Click(object sender, EventArgs e)
         {
             
-
             if (string.IsNullOrEmpty(txtNome.Text) || string.IsNullOrEmpty(txtTelefone.Text))
             {
                 MessageBox.Show("Preencha todos os campos!");
@@ -32,35 +31,38 @@ namespace Prova_Prática___Windows_Forms
                 Telefone = txtTelefone.Text
             };
 
+            
+            bool telefoneExiste = Database.VerificarUsuarioExistente(novoUsuario.Telefone);
+            if (telefoneExiste)
+            {
+                MessageBox.Show("O telefone informado já está cadastrado.");
+                return; 
+            }
 
-
+            
             bool sucesso = Database.SalvarUsuario(novoUsuario);
             if (sucesso)
             {
-                MessageBox.Show("Usuário salvo!!!");
-                return;
+                MessageBox.Show("Usuário salvo com sucesso!");
+                LimparCampos();
+                AtualizarLista();
             }
-
-
-            LimparCampos();
-            AtualizarLista();
-
-
+            else
+            {
+                MessageBox.Show("Erro ao salvar o usuário.");
+            }
         }
+
         public void AtualizarLista()
         {
+            Lista.Items.Clear();
             List<Usuario> usuarios = Database.GetUsuario();
             foreach (Usuario usuario in usuarios)
             {
                 ListViewItem registro = new ListViewItem(usuario.Nome);
                 registro.SubItems.Add(usuario.Telefone);
                 Lista.Items.Add(registro);
-
             }
-
-
-
-
         }
     }
 }

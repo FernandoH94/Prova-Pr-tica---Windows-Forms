@@ -97,6 +97,7 @@
             // Telefone
             // 
             Telefone.Text = "telefone";
+            Telefone.Width = 120;
             // 
             // Cadastro
             // 
